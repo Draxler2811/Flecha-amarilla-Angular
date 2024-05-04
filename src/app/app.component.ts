@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/app-header/header/header.component';
 import { BannerRightComponent } from './components/app-banner-right/banner-right/banner-right.component';
@@ -10,6 +10,7 @@ import { NotfoundComponent } from './components/notfound/notfound/notfound.compo
 import {MatButtonModule} from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
+import { ObtenerDatosServiceService } from './services/obtener-datos.service';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,26 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  valores:any;
+constructor(private obtenerDatosService : ObtenerDatosServiceService){
+
+}
+ngOnInit(): void {
+  this.getPokemon();
+}
+
+getPokemon() : void{
+  this.obtenerDatosService.getPokemon('https://pokeapi.co/api/v2/pokemon').subscribe(
+    (items :any) =>{
+      console.log(items.results);
+      this.valores=items.results;
+    }
+  )
+}
+  
+
   title = 'ejercicio1';
   alumnos : String = "omar"
   valorif=true;
