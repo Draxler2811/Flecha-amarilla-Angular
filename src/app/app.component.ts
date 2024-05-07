@@ -11,7 +11,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
 import { ObtenerDatosServiceService } from './services/obtener-datos.service';
-
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -26,7 +26,8 @@ import { ObtenerDatosServiceService } from './services/obtener-datos.service';
     NotfoundComponent,
     MatButtonModule,
     MatGridListModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
     
   ],
   templateUrl: './app.component.html',
@@ -34,12 +35,28 @@ import { ObtenerDatosServiceService } from './services/obtener-datos.service';
 })
 export class AppComponent implements OnInit {
 
-  valores:any;
-constructor(private obtenerDatosService : ObtenerDatosServiceService){
+  valores:any[]=[];
+  checkoutForm : any;
+constructor(private obtenerDatosService : ObtenerDatosServiceService,private formBuilder: FormBuilder){
+  this.checkoutForm = this.formBuilder.group({
+    name:new FormControl(null,[Validators.minLength(1)]),
+    url: new FormControl(null,[Validators.maxLength(2)]),
+    email: new FormControl(null,[Validators.pattern('^[^@]+@[^@]+\.[a-zA-Z]{2,}$')])
+
+  });
 
 }
 ngOnInit(): void {
   this.getPokemon();
+}
+
+onSubmit(valorFormulario:any){
+  if((this.checkoutForm.invalid) || (this.checkoutForm.get('name').value == 'angular')){
+    alert('Formulario incorrecto')
+  }else {
+this.valores.push(valorFormulario);
+this.checkoutForm.reset();
+  }
 }
 
 getPokemon() : void{
