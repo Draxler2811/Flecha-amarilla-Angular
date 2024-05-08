@@ -10,7 +10,9 @@
 <style>
   
 </style>
+<app-app-loader></app-app-loader>
 
+<div [ngClass]="loader ? 'cargando' : ''">
 <mat-grid-tile-header cols="2" rowHeight="2:2">
   <app-header></app-header>
 </mat-grid-tile-header>
@@ -22,7 +24,7 @@
 <mat-grid-list cols="2" rowHeight="2:3">
   
   <mat-grid-tile style="background-color: red;"><app-banner-left></app-banner-left> </mat-grid-tile> 
-  <mat-grid-tile style="background-color: blue;"></mat-grid-tile>   <app-banner-right></app-banner-right>
+  <mat-grid-tile style="background-color: blue;"><app-banner-right></app-banner-right> </mat-grid-tile>
 </mat-grid-list>
 
 <ul>
@@ -31,25 +33,26 @@
         
     <app-body></app-body>
 
-    <mat-grid-tile-footer cols="2" rowHeight="2:2">
-      <app-footer></app-footer>
-    </mat-grid-tile-footer>
 
-    <div style="text-align: center;">
-      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
+  <mat-grid-tile-footer cols="2" rowHeight="2:2">
+    <app-footer></app-footer>
+  </mat-grid-tile-footer>
 
-        <label for="name">Name</label>
-        <input id="name" type="text" formControlName="name">
-        
-        <label for="url">URL</label>
-        <input id="url" type="text" formControlName="url">
+  <div style="text-align: center;">
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
 
-        <label for="email">Email</label>
-        <input id="email" type="text" formControlName="email">
-        
-        <button mat-raised-button type="submit">Purchase</button>
-      </form>
-    </div>
+      <label for="name">Name</label>
+      <input id="name" type="text" formControlName="name">
+      
+      <label for="url">URL</label>
+      <input id="url" type="text" formControlName="url">
 
+      <label for="email">Email</label>
+      <input id="email" type="text" formControlName="email">
+      
+      <button mat-raised-button type="submit">Purchase</button>
+    </form>
+  </div>
+</div>
   <router-outlet>
   <router-outlet /> 

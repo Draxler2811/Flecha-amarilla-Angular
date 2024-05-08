@@ -12,6 +12,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
 import { ObtenerDatosServiceService } from './services/obtener-datos.service';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ObservablesService } from './services/observables.service';
+import { AppLoaderComponent } from './components/app-loader/app-loader.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -27,7 +30,10 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
     MatButtonModule,
     MatGridListModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppLoaderComponent
+
+
     
   ],
   templateUrl: './app.component.html',
@@ -37,7 +43,12 @@ export class AppComponent implements OnInit {
 
   valores:any[]=[];
   checkoutForm : any;
-constructor(private obtenerDatosService : ObtenerDatosServiceService,private formBuilder: FormBuilder){
+  loader:boolean=false;
+
+constructor(private obtenerDatosService : ObtenerDatosServiceService,
+  private formBuilder: FormBuilder,
+  private ObservableService:ObservablesService){
+
   this.checkoutForm = this.formBuilder.group({
     name:new FormControl(null,[Validators.minLength(1)]),
     url: new FormControl(null,[Validators.maxLength(2)]),
@@ -48,6 +59,10 @@ constructor(private obtenerDatosService : ObtenerDatosServiceService,private for
 }
 ngOnInit(): void {
   this.getPokemon();
+  this.ObservableService.loaderObs.subscribe((valor:boolean)=>{
+    this.loader=valor;
+    console.log(valor);
+  });
 }
 
 onSubmit(valorFormulario:any){
@@ -64,6 +79,7 @@ getPokemon() : void{
     (items :any) =>{
       console.log(items.results);
       this.valores=items.results;
+      setTimeout(() => this.ObservableService.actualizarValorLoader(false),5000);  
     }
   )
 }
